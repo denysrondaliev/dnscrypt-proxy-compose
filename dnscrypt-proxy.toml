@@ -1,46 +1,15 @@
 
-##############################################
-#                                            #
-#        dnscrypt-proxy configuration        #
-#                                            #
-##############################################
+## List of servers to use. See https://dnscrypt.info/public-servers
+server_names = ['cloudflare', 'quad9-doh-ip4-port443-filter-ecs-pri']
 
-## This is an example configuration file.
-## You should adjust it to your needs, and save it as "dnscrypt-proxy.toml"
-##
-## Online documentation is available here: https://dnscrypt.info/doc
-
-
-
-##################################
-#         Global settings        #
-##################################
-
-## List of servers to use
-##
-## Servers from the "public-resolvers" source (see down below) can
-## be viewed here: https://dnscrypt.info/public-servers
-##
-## The proxy will automatically pick working servers from this list.
-## Note that the require_* filters do NOT apply when using this setting.
-##
-## By default, this list is empty and all registered servers matching the
-## require_* filters will be used instead.
-##
-## Remove the leading # first to enable this; lines starting with # are ignored.
-
-# server_names = ['scaleway-fr', 'google', 'yandex', 'cloudflare']
-
-
-## List of local addresses and ports to listen to. Can be IPv4 and/or IPv6.
+## List of local addresses and ports to listen to.
 ## Example with both IPv4 and IPv6:
 ## listen_addresses = ['127.0.0.1:53', '[::1]:53']
-##
+
 ## To listen to all IPv4 addresses, use `listen_addresses = ['0.0.0.0:53']`
 ## To listen to all IPv4+IPv6 addresses, use `listen_addresses = ['[::]:53']`
 
-listen_addresses = ['0.0.0.0:5300']
-
+listen_addresses = ['0.0.0.0:53']
 
 ## Maximum number of simultaneous client connections to accept
 
@@ -60,7 +29,7 @@ max_clients = 250
 # Use servers reachable over IPv4
 ipv4_servers = true
 
-# Use servers reachable over IPv6 -- Do not enable if you don't have IPv6 connectivity
+# Use servers reachable over IPv6 (Do not enable if you don't have IPv6 connectivity)
 ipv6_servers = false
 
 # Use servers implementing the DNSCrypt protocol
@@ -76,13 +45,13 @@ odoh_servers = false
 ## Require servers defined by remote sources to satisfy specific properties
 
 # Server must support DNS security extensions (DNSSEC)
-require_dnssec = false
+require_dnssec = true
 
 # Server must not log user queries (declarative)
 require_nolog = true
 
 # Server must not enforce its own blocklist (for parental control, ads blocking...)
-require_nofilter = true
+require_nofilter = false
 
 # Server names to avoid even if they match all criteria
 disabled_server_names = []
@@ -241,7 +210,7 @@ cert_refresh_delay = 240
 ## not be sent there. If you're using DNSCrypt or Anonymized DNS and your
 ## lists are up to date, these resolvers will not even be used.
 
-bootstrap_resolvers = ['9.9.9.9:53', '8.8.8.8:53']
+bootstrap_resolvers = ['1.1.1.1:53', '9.9.9.11:53']
 
 
 ## Always use the bootstrap resolver before the system DNS settings.
@@ -267,7 +236,7 @@ netprobe_timeout = 60
 ## On other operating systems, the connection will be initialized
 ## but nothing will be sent at all.
 
-netprobe_address = '9.9.9.9:53'
+netprobe_address = '1.1.1.1:53'
 
 
 ## Offline mode - Do not use any remote encrypted servers.
