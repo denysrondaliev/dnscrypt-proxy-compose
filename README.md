@@ -10,6 +10,7 @@
 ```bash
 git clone https://github.com/unleftie/dnscrypt-proxy-docker.git
 cd dnscrypt-proxy-docker
+chmod 644 dnscrypt-proxy.toml
 docker compose up -d
 ```
 
