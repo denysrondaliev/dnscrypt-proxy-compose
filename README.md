@@ -16,7 +16,8 @@ docker compose up -d
 ## Local Testing
 
 ```bash
-host google.com 172.17.0.2
+DNSCRYPT_PROXY_IP=$(docker inspect dnscrypt-proxy | jq -r ".[] | .NetworkSettings | .Networks .dnscrypt_dnscrypt_net | .IPAddress")
+host google.com $DNSCRYPT_PROXY_IP
 ```
 
 ## Uses the following Docker containers
