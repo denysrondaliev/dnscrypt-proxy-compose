@@ -13,9 +13,14 @@ cd dnscrypt-proxy-docker
 docker compose up -d
 ```
 
+## Local Testing
+
+```bash
+host google.com 172.17.0.2
+```
+
 ## Uses the following Docker containers
 
-- https://github.com/pi-hole/docker-pi-hole
 - https://github.com/klutchell/dnscrypt-proxy
 
 ## 📝 License
