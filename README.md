@@ -14,7 +14,7 @@ chmod 644 dnscrypt-proxy.toml
 docker compose up -d
 ```
 
-## Local Testing
+## Testing
 
 ```bash
 DNSCRYPT_PROXY_IP=$(docker inspect dnscrypt-proxy | jq -r ".[] | .NetworkSettings | .Networks | .[] | .IPAddress")
