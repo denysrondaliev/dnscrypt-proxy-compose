@@ -2,14 +2,14 @@
 
 ## Dependencies
 
-- docker
-- docker compose
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose plugin](https://docs.docker.com/compose/install/linux/)
 
 ## Installation
 
 ```bash
-git clone https://github.com/unleftie/dnscrypt-proxy-docker.git
-cd dnscrypt-proxy-docker
+git clone https://github.com/unleftie/dnscrypt-proxy-compose.git
+cd dnscrypt-proxy-compose
 chmod 644 dnscrypt-proxy.toml
 docker compose up -d
 ```
@@ -27,4 +27,4 @@ host google.com $DNSCRYPT_PROXY_IP
 
 ## 📝 License
 
-This project is licensed under the [MIT](LICENSE.md).
+This project is licensed under the [GPL-3.0](LICENSE).
