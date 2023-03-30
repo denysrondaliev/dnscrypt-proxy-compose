@@ -27,4 +27,4 @@ host google.com $DNSCRYPT_PROXY_IP
 
 ## 📝 License
 
-This project is licensed under the [GPL-3.0](LICENSE).
+This project is licensed under the [GPL-3.0](LICENSE)..
