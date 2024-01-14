@@ -8,7 +8,7 @@
 ## Installation
 
 ```bash
-git clone https://github.com/unleftie/dnscrypt-proxy-compose.git
+git clone https://github.com/denysrondaliev/dnscrypt-proxy-compose.git
 cd dnscrypt-proxy-compose
 chmod 644 dnscrypt-proxy.toml
 docker compose up -d
