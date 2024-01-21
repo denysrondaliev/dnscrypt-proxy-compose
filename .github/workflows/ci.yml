@@ -16,8 +16,9 @@ on:
 env:
   KICS_SCAN_PATH: "./"
 
-# Declare default permissions as read only.
-permissions: read-all
+permissions:
+  packages: write
+  contents: write
 
 jobs:
   scan:
