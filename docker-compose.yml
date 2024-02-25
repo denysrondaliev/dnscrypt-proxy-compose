@@ -1,25 +1,31 @@
-version: "3"
-
 networks:
   dnscrypt_net:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.18.0.0/24
+        - subnet: "172.18.0.0/24"
+        - subnet: "fd00::/64"
 
 services:
   dnscrypt-proxy:
     container_name: dnscrypt-proxy
-    image: klutchell/dnscrypt-proxy:latest
+    image: klutchell/dnscrypt-proxy:main
     user: nobody
+    environment:
+      - TZ="Europe/Kyiv"
     networks:
       dnscrypt_net:
-        ipv4_address: 172.18.0.2
+        ipv4_address: "172.18.0.2"
+        ipv6_address: "fd00::2"
     expose:
       - "53/udp"
       - "53/tcp"
     volumes:
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
       - "./dnscrypt-proxy.toml:/config/dnscrypt-proxy.toml"
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "dnsprobe", "google.com", "127.0.0.1:53" ]
+      interval: 360s
+      timeout: 5s
+      retries: 2
+      start_period: 30s
