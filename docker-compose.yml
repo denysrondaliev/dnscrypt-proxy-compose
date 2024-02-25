@@ -21,8 +21,8 @@ services:
       - "53/udp"
       - "53/tcp"
     volumes:
-      # - "./dnscrypt-proxy-ipv4-only:/config/dnscrypt-proxy.toml"
-      - "./dnscrypt-proxy.toml:/config/dnscrypt-proxy.toml"
+      # - "./dnscrypt-proxy-ipv4-only:/config/dnscrypt-proxy.toml:ro"
+      - "./dnscrypt-proxy.toml:/config/dnscrypt-proxy.toml:ro"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "dnsprobe", "google.com", "127.0.0.1:53"]
