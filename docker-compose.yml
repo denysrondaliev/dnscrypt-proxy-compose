@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "dnsprobe", "google.com", "127.0.0.1:53"]
-      interval: 360s
+      interval: 720s
       timeout: 5s
       retries: 2
       start_period: 30s
