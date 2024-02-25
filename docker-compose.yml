@@ -21,7 +21,7 @@ services:
       - "53/udp"
       - "53/tcp"
     volumes:
-      # - "./dnscrypt-proxy-ipv4-only:/config/dnscrypt-proxy.toml:ro"
+      # - "./dnscrypt-proxy-ipv4-only.toml:/config/dnscrypt-proxy.toml:ro"
       - "./dnscrypt-proxy.toml:/config/dnscrypt-proxy.toml:ro"
     restart: unless-stopped
     healthcheck:
