@@ -5,8 +5,16 @@ on:
       runKics:
         description: Run KICS scan
         type: boolean
-        default: false
+        default: true
         required: false
+      runLint:
+        description: Run Ansible Lint
+        type: boolean
+        default: true
+      runMolecule:
+        description: Run Ansible Molecule
+        type: boolean
+        default: true
       publishRelease:
         description: Publish Release
         type: boolean
@@ -15,16 +23,13 @@ on:
   push:
     paths-ignore: ["**.md", "LICENSE", ".github/dependabot.yml"]
     branches: ["master", "main"]
-  pull_request:
+  pull_request_target:
     paths-ignore: ["**.md", "LICENSE", ".github/dependabot.yml"]
     branches: ["master", "main"]
+    types: [opened, reopened]
 
 env:
   KICS_SCAN_PATH: "./"
-
-permissions:
-  packages: write
-  contents: write
 
 jobs:
   scan:
@@ -34,7 +39,7 @@ jobs:
     if: |
       inputs.runKics == true ||
       github.event_name == 'push' ||
-      github.event_name == 'pull_request'
+      github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
     permissions:
       contents: read
       issues: write
@@ -61,9 +66,61 @@ jobs:
         continue-on-error: true
 
       - name: Upload to code-scanning
-        uses: github/codeql-action/upload-sarif@c7f9125735019aa87cfc361530512d50ea439c71 # v3.25.1
+        uses: github/codeql-action/upload-sarif@eb055d739abdc2e8de2e5f4ba1a8b246daa779aa # v3.26.0
         with:
           sarif_file: results.sarif
+
+  lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: |
+      inputs.runLint == true ||
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Run Ansible Lint
+        uses: unleftie/ansible-lint-action@f6c9ea06aebdd94a4a7e0414d630fdb6832b1083 # v1.1.0
+
+  molecule:
+    name: Ansible Molecule
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: |
+      inputs.runMolecule == true ||
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
+    strategy:
+      fail-fast: false
+      matrix:
+        distro:
+          - debian12
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Run Ansible Molecule
+        uses: unleftie/ansible-molecule-action@e8cecf7f6dfab2293dd28df032318e6a698c60a3 # v1.7.0
+        with:
+          github_token: ${{ github.token }}
+          role_name: ${{ github.event.repository.name }}
+          distro: ${{ matrix.distro }}
 
   release:
     name: Publish Release
@@ -71,8 +128,8 @@ jobs:
     if: |
       inputs.publishRelease == true ||
       github.event_name == 'push' ||
-      github.event_name == 'pull_request'
-    needs: [scan]
+      github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
+    needs: [scan, lint, molecule]
     permissions:
       packages: write
       contents: write
