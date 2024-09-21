@@ -7,9 +7,9 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "chore"
-      include: "scope"
     labels:
-      - "enhancement"
+      - "dependencies"
+      - "dependabot"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]

@@ -2,7 +2,7 @@ name: Scorecard
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 4 1 * *"
+    - cron: "5 4 1 * *" # at 04:05 on day-of-month 1
 
 # Declare default permissions as read only.
 permissions: read-all
@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
-      security-events: write # Needed to upload the results to code-scanning dashboard.
-      id-token: write # Needed to publish results and get a badge.
+      security-events: write
+      id-token: write
       contents: read
       actions: read
 
@@ -25,7 +25,7 @@ jobs:
           egress-policy: audit
 
       - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
